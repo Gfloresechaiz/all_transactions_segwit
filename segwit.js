@@ -211,6 +211,7 @@ async function getBlockfee(id) {
       sum += vout.value
     }
   }
+}
 
 // Get the realized and potential fee savings of segwit for the given tx
 function calcSegwitFeeGains(tx) {
