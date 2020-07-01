@@ -104,7 +104,7 @@ async function main(scanFromHeight) {
     stopBlockSeen = true
     batchOf10Blocks = _.slice(batchOf10Blocks, 0, stopBlockIndex)
   }
-
+  const pushAirtable = []
   await asyncForEach(batchOf10Blocks, async block => {
     console.log('\n%cblock.height', 'color:orange;font-weight:bold;', block.height)
 
@@ -155,15 +155,14 @@ async function main(scanFromHeight) {
     console.log('\n', `Finished block ${block.height}`, '\n')
     console.log('Writing the following payload to airtable', blockData, '...\n')
     // You must shape the data as expected by `writeToAirtable`
-    await writeToAirtable([{ fields: { ...blockData } }])
+    pushAirtable.push({ fields: blockData })
   })
-
   // if seen stopBlock gtfo of main loop, we are done.
   if (stopBlockSeen) {
     console.log('\n Stop Block was observed in this batch, shut it down because we have all the newest data. \n')
     return
   }
-
+  await writeToAirtable(pushAirtable)
   await main(scanFromHeight - 10)
 }
 
@@ -209,8 +208,10 @@ async function getBlockfee(id) {
   for (const vout of batchOfTx[0].vout) {
     if (typeof(vout.value) === 'number' ) { 
       sum += vout.value
+      console.log(sum) 
     }
   }
+  return sum
 }
 
 // Get the realized and potential fee savings of segwit for the given tx
