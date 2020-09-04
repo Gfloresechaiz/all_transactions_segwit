@@ -5,7 +5,7 @@
   "author": "Nathaniel <nat.kitzke@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "airtable": "^0.7.1",
+    "airtable": "^0.7.2",
     "async-retry": "^1.3.1",
     "colors": "^1.4.0",
     "dotenv": "^8.2.0",
